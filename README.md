@@ -29,37 +29,36 @@
 解决方案：测试中发现某个信号一直被往小车发送，干扰我们通过手柄操作发送信号的 -> 发现某个按钮是坏了的（按钮D）,所以屏蔽按钮D之后就可以正常地发送信号，而且小车也正常地接收信号。
  - 问题二：怎样用非抢占的方式处理isTxDone返回FALSE的情况？
 解决方案：将写指令的部分设置成一个任务，通过一个外部变量byte来控制从指令的第几位开始写起。如果想要写当前位的时候tx函数没有执行完，便会post写的任务一段时间后再写；如果成功写入就将外部变量byte++，并继续试图写下一个byte的数据。当8个byte都写完之后，将变量byte重新置为1并释放串口的资源。
-        task void writeOrder()
-	{
-		switch(byte){
-			case 1:
-			if(!(call HplMsp430Usart.isTxEmpty())){
-				post writeOrder();
-				break;
-			}
-			data_end = data % 0x100;
-			call HplMsp430Usart.tx(0x01);
-			byte++;
-        
-			case 2:
-			…
-			case 3:
-			…
-			case 4:
-			…
-			case 5:
-			…
-			case 6:
-			…
-			case 7:
-			…
-			case 8:
-			…
-			call Resource.release();
-			busy_write = FALSE;
-			byte = 1;			
+task void writeOrder(){
+	switch(byte){
+		case 1:
+		if(!(call HplMsp430Usart.isTxEmpty())){
+			post writeOrder();
+			break;
 		}
+		data_end = data % 0x100;
+		call HplMsp430Usart.tx(0x01);
+		byte++;
+        
+		case 2:
+		…
+		case 3:
+		…
+		case 4:
+		…
+		case 5:
+		…
+		case 6:
+		…
+		case 7:
+		…
+		case 8:
+		…
+		call Resource.release();
+		busy_write = FALSE;
+		byte = 1;			
 	}
+}
  - 问题二：用上述方法处理后怎样保证一个指令的8个byte都写完之后再写入下一个指令？
 解决方案：设置一个busy_write变量对post命令做出限制。只有当busy_write为FALSE的时候才可一个post一个写一条指令的命令，而一个指令开始写之后便会将busy_write设为TRUE，直到这条指令被完全写完再将busy_write置为FALSE。这样一来可以避免一条指令在写入的时候另一条指令post写指令的任务的情况。因为这种情况发生的时候如果前面的指令没有写完，想要post的时候会因为队列中已经有一个相同任务而失败。
  - 问题四：怎样实现一键复位？
