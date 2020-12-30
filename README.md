@@ -9,13 +9,15 @@
  - 프로세스들은 크게 태스크와 이벤트로 나뉘며, 스케쥴링의 간편성을 위해 2-level scheduling 기법을 사용. 태스크를 다른 태스크에 의해 선점되지 않지만, 이벤트에 의해서는 선점됨.
  - 이벤트는 특정 하드웨어 인터럽트나 특정 조건을 만족했을 경우 호출되는 프로세스이고, 태스크보다 먼저 실행됨.
  
+ ![Alt text](C:\Users\dlwog\Desktop\1461_654_1057[1].jpg)
+ 
 # NesC(Network embedded system C)
  - 구조적 개념과 TinyOS 실행 모델을 구체화하기 위해 디자인 된 C의 확장.
  - 여러 컴포넌트들을 연결(Wiring)하여 하나의 애플리케이션 형태로 조합.
- - 구성은 Application, Interface, Component로 나뉨.
- - Application : 하나 이상의 컴포넌트로 구성되고, 실제 노드에서 실행 가능한 하나의 프로그램을 뜻함.
- - Interface : 두 컴포넌트를 연결하는 포트의 역할을 수행하며 양방향성을 가짐. Command와 Event를 이용.
- - Component : 자신이 사용할 하위 컴포넌트들을 선언하고, 그들 간의 연결을 정의하는 Configuration과 자신의 구현 내용을 기술하고 있는 Module로 나뉨.
+ - 구성은 **Application**, **Interface**, **Component**로 나뉨.
+ - **Application** : 하나 이상의 컴포넌트로 구성되고, 실제 노드에서 실행 가능한 하나의 프로그램을 뜻함.
+ - **Interface** : 두 컴포넌트를 연결하는 포트의 역할을 수행하며 양방향성을 가짐. Command와 Event를 이용.
+ - **Component** : 자신이 사용할 하위 컴포넌트들을 선언하고, 그들 간의 연결을 정의하는 Configuration과 자신의 구현 내용을 기술하고 있는 Module로 나뉨.
  - Component에서는 Task와 Event가 사용되고, Task보다 Event가 먼저 선점되어 작동한다.
  - Configuration은 다른 컴포넌트와의 연결에 대한 내용을 정의함. 연결에 사용할 컴포넌트를 나열하고 그들간의 연결을 기술함. 이때 컴포넌트 사이의 연결을 와이어링(Wiring)이라 하는데, '->', '<-', '=' 세가지 방법이 있음.
  - component1.interface = component2.interface : 두개의 interface가 모두 제공자나 사용자로써 사용될 수 있는 경우
