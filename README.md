@@ -33,63 +33,63 @@
 
 
 
-task void writeOrder(){
+	task void writeOrder(){
 
-	switch(byte){
+		switch(byte){
 
-		case 1:
+			case 1:
 
-		if(!(call HplMsp430Usart.isTxEmpty())){
+			if(!(call HplMsp430Usart.isTxEmpty())){
 
-			post writeOrder();
+				post writeOrder();
 
-			break;
+				break;
 
-		}
+			}
 
-		data_end = data % 0x100;
+			data_end = data % 0x100;
 
-		call HplMsp430Usart.tx(0x01);
+			call HplMsp430Usart.tx(0x01);
 
-		byte++;
+			byte++;
 
         
-		case 2:
+			case 2:
 
-		…
+			…
 
-		case 3:
+			case 3:
 
-		…
+			…
 
-		case 4:
+			case 4:
 
-		…
+			…
 
-		case 5:
+			case 5:
 
-		…
+			…
 
-		case 6:
+			case 6:
 
-		…
+			…
 
-		case 7:
+			case 7:
 
-		…
+			…
 
-		case 8:
+			case 8:
 
-		…
+			…
 
-		call Resource.release();
+			call Resource.release();
 
-		busy_write = FALSE;
+			busy_write = FALSE;
 
-		byte = 1;
+			byte = 1;
+		}
+
 	}
-
-}
 
 
 
