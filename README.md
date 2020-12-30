@@ -30,68 +30,39 @@
   - 해결방안 : 명령을 작성하는 부분을 하나의 Task로 만들고, 전역변수 byte를 통해 명령의 몇번째 순서를 작성할지 표시함. 만약 현재 byte가 표시하는 위치의 명령을 작성하고 싶은데 tx함수가 아직 종료되지 않았을시에는, post가 작성하는 작업을 일정 기간 후에 작성함. 만약 작성이 성공적으로 완성됬을 시에는 전역변수 byte++를 하고, 계쏙해서 다음 byte위치의 명령을 작성한다. 8개의 byte가 전부 작성되면 byte 변수의 값을 1로 만들고, USB를 통해 리소스를 전달함.
 
 
-
-
+'''
 
 	task void writeOrder(){
-
 		switch(byte){
-
 			case 1:
-
 			if(!(call HplMsp430Usart.isTxEmpty())){
-
 				post writeOrder();
-
 				break;
-
 			}
-
 			data_end = data % 0x100;
-
 			call HplMsp430Usart.tx(0x01);
-
 			byte++;
-
         
 			case 2:
-
 			…
-
 			case 3:
-
 			…
-
 			case 4:
-
 			…
-
 			case 5:
-
 			…
-
 			case 6:
-
 			…
-
 			case 7:
-
 			…
-
 			case 8:
-
 			…
-
 			call Resource.release();
-
 			busy_write = FALSE;
-
 			byte = 1;
 		}
-
 	}
-
-
+'''
 
 
 
