@@ -1,3 +1,20 @@
+
+# TinyOS란?
+ - UC 버클리에서 개발된 센서 네트워크를 위한 오픈소스 운영체제이며, 현재 세계에서 가장 큰 센서 네트워크 커뮤니티를 형성중.
+ - nesC라는 C 기반의 프로그래밍 언어를 사용한 이벤트 기반의 운용체계.
+ - 센싱 노드와 같은 초저전력, 초소형, 저가의 노드에 저전력, 적은 코드 사이즈, 최소한의 하드웨어 리소스를 사용하는 내장형 OS를 목표로 함.
+ - 매우 작은 크기여서 익히기 쉽고, 높은 수준의 모듈 구조로 되어 있어 확장이 용이함.
+ - TinyOS의 구성은 Component와 Interface로 나눌 수 있으며, Interface는 말 그대로 제공되는 Component를 사용하기 위한 Interface임.
+ - 구현되는 Component에서는 Task와 Event가 사용되고, Task보다 Event가 먼저 선점되어 작동한다. 기본적으로는 FIFO 방식으로 처리된다.
+ - Component는 Configuration과 Module로 나뉨.
+ - Configuration이 Interface와 Module Component간의 관계 설정이고 Module이 구현부이다.
+ - 출처 : https://terms.naver.com/entry.nhn?docId=864096  
+ 	https://terms.naver.com/entry.nhn?docId=3435121  
+	https://usn-pioneer.tistory.com/17
+	
+# 프로젝트 설명
+ - 로봇 차량에는 STM32 시스템이 탑재돼있고, 해당 시스템이 로봇 차량의 컨트롤을 담당. Telosb 노드에서 TinyOS 시스템이 실행되며, 콘솔에서 발송하는 신호를 Telosb 노드에서 받아서 해당 노드에 달려있는 USB을 통해 로봇 차량에 데이터를 전송해 로봇 차량을 작동시킴. 이번 프로젝트에서 구현해야 하는 것은, 콘솔에서 보내는 버튼 및 조이스틱 신호에 따라 각기 다른 로봇 차량 조작을 구현시키는 코드를 작성하는 것.
+
 # 프로젝트 환경
  - Ubuntu 16.04
  - TinyOS 2.1.2
