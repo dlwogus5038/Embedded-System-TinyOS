@@ -1,16 +1,31 @@
 
-# TinyOS란?
+# TinyOS
  - UC 버클리에서 개발된 센서 네트워크를 위한 오픈소스 운영체제이며, 현재 세계에서 가장 큰 센서 네트워크 커뮤니티를 형성중.
  - nesC라는 C 기반의 프로그래밍 언어를 사용한 이벤트 기반의 운용체계.
  - 센싱 노드와 같은 초저전력, 초소형, 저가의 노드에 저전력, 적은 코드 사이즈, 최소한의 하드웨어 리소스를 사용하는 내장형 OS를 목표로 함.
  - 매우 작은 크기여서 익히기 쉽고, 높은 수준의 모듈 구조로 되어 있어 확장이 용이함.
- - TinyOS의 구성은 Component와 Interface로 나눌 수 있으며, Interface는 말 그대로 제공되는 Component를 사용하기 위한 Interface임.
- - 구현되는 Component에서는 Task와 Event가 사용되고, Task보다 Event가 먼저 선점되어 작동한다. 기본적으로는 FIFO 방식으로 처리된다.
- - Component는 Configuration과 Module로 나뉨.
- - Configuration이 Interface와 Module Component간의 관계 설정이고 Module이 구현부이다.
+ - 전원 소모와 메모리 소모가 많이 발생하게 되는 이유때문에 한 번에 하나의 애플리케이션만 실행. 여러 기능을 동시에 동작시키고자 할 경우에는 한 개의 애플리케이션에 아주 작은 단위로 동작을 세분화하여 태스크(Task) 형태로 동작.
+ - FIFO(First In First Out)형태의 스케쥴러(Scheduler)로 동작하며, 전원이 꺼질 때 까지 무한 루프(loop)에서 동작.
+ - 프로세스들은 크게 태스크와 이벤트로 나뉘며, 스케쥴링의 간편성을 위해 2-level scheduling 기법을 사용. 태스크를 다른 태스크에 의해 선점되지 않지만, 이벤트에 의해서는 선점됨.
+ - 이벤트는 특정 하드웨어 인터럽트나 특정 조건을 만족했을 경우 호출되는 프로세스이고, 태스크보다 먼저 실행됨.
+ 
+# NesC(Network embedded system C)
+ - 구조적 개념과 TinyOS 실행 모델을 구체화하기 위해 디자인 된 C의 확장.
+ - 여러 컴포넌트들을 연결(Wiring)하여 하나의 애플리케이션 형태로 조합.
+ - 구성은 Application, Interface, Component로 나뉨.
+ - Application : 하나 이상의 컴포넌트로 구성되고, 실제 노드에서 실행 가능한 하나의 프로그램을 뜻함.
+ - Interface : 두 컴포넌트를 연결하는 포트의 역할을 수행하며 양방향성을 가짐. Command와 Event를 이용.
+ - Component : 자신이 사용할 하위 컴포넌트들을 선언하고, 그들 간의 연결을 정의하는 Configuration과 자신의 구현 내용을 기술하고 있는 Module로 나뉨.
+ - Component에서는 Task와 Event가 사용되고, Task보다 Event가 먼저 선점되어 작동한다.
+ - Configuration은 다른 컴포넌트와의 연결에 대한 내용을 정의함. 연결에 사용할 컴포넌트를 나열하고 그들간의 연결을 기술함. 이때 컴포넌트 사이의 연결을 와이어링(Wiring)이라 하는데, '->', '<-', '=' 세가지 방법이 있음.
+ - component1.interface = component2.interface : 두개의 interface가 모두 제공자나 사용자로써 사용될 수 있는 경우
+ - component1.interface -> component2.interface : component1.interface에서 사용한 함수가 component2.interface에 구현되어 있음을 나타냄. 즉 component1.interface가 사용자고 component2.interface가 제공자.
+ - component1.interface <- component2.interface : 반대로 component1.interface가 제공자고 component2.interface가 사용자
+ - Module은 해당 컴포넌트의 실제 구현에 대한 내용이 기술되어 있음.1
  - 출처 : https://terms.naver.com/entry.nhn?docId=864096  
  	https://terms.naver.com/entry.nhn?docId=3435121  
-	https://usn-pioneer.tistory.com/17
+	https://usn-pioneer.tistory.com/17  
+	https://yongjun86.tistory.com/entry/TinyOS-NesC
 	
 # 프로젝트 설명
  - 로봇 차량에는 STM32 시스템이 탑재돼있고, 해당 시스템이 로봇 차량의 컨트롤을 담당. Telosb 노드에서 TinyOS 시스템이 실행되며, 콘솔에서 발송하는 신호를 Telosb 노드에서 받아서 해당 노드에 달려있는 USB을 통해 로봇 차량에 데이터를 전송해 로봇 차량을 작동시킴. 이번 프로젝트에서 구현해야 하는 것은, 콘솔에서 보내는 버튼 및 조이스틱 신호에 따라 각기 다른 로봇 차량 조작을 구현시키는 코드를 작성하는 것.
